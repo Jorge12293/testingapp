@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -70,36 +72,30 @@ class _MyHomePage2State extends State<MyHomePage2> {
 
   List<UserNotify> _generateItems() {
     List<UserNotify> listUserNotify = [];
-    listUserNotify.add(
-     UserNotify ( 
-      id:1,
-      fecha:'07-17-2022',
-      usuario:'Representante',
-      tipo:'Aviso Administrador',
-      nombre:'Jorge',
-      leido:false,
-      )
-    );
-    listUserNotify.add(
-     UserNotify ( 
-      id:2,
-      fecha:'08-17-2022',
-      usuario:'Conductor',
-      tipo:'Aviso Administrador',
-      nombre:'Juan',
-      leido:true,
-      )
-    );
-    listUserNotify.add(
-     UserNotify ( 
-      id:3,
-      fecha:'09-17-2022',
-      usuario:'Conductor',
-      tipo:'Aviso Administrador',
-      nombre:'Pedro',
-      leido:false,
-      )
-    );
+    listUserNotify.add(UserNotify(
+      id: listUserNotify.length + 1,
+      fecha: '07-17-2022',
+      usuario: 'Representante',
+      tipo: 'Aviso Administrador',
+      nombre: 'Jorge',
+      leido: false,
+    ));
+    listUserNotify.add(UserNotify(
+      id: listUserNotify.length + 1,
+      fecha: '08-17-2022',
+      usuario: 'Conductor',
+      tipo: 'Aviso Administrador',
+      nombre: 'Juan',
+      leido: true,
+    ));
+    listUserNotify.add(UserNotify(
+      id: listUserNotify.length + 1,
+      fecha: '09-17-2022',
+      usuario: 'Conductor',
+      tipo: 'Aviso Administrador',
+      nombre: 'Pedro',
+      leido: false,
+    ));
     return listUserNotify;
 
     /*
@@ -178,23 +174,25 @@ class _MyHomePage2State extends State<MyHomePage2> {
                 children: [
                   RichText(
                     textAlign: TextAlign.center,
-                    text:  TextSpan(
+                    text: TextSpan(
                         style: const TextStyle(color: Colors.black),
                         children: <InlineSpan>[
                           TextSpan(
                               text: 'Destinatario: (${userNotify.usuario})',
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           const TextSpan(text: '\n'),
                           TextSpan(
                               text: userNotify.nombre,
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           const TextSpan(text: '\n\n'),
                           TextSpan(
                               text: userNotify.fecha,
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           const TextSpan(text: '\n\n'),
-                          TextSpan(
-                              text:userNotify.tipo),
+                          TextSpan(text: userNotify.tipo),
                         ]),
                   ),
                   const Divider(thickness: 1)
@@ -212,6 +210,14 @@ class _MyHomePage2State extends State<MyHomePage2> {
           selectTypeRoutingInfo(userNotify);
         }
       },
+      color:
+          MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+        if (userNotify.id % 2 == 0) {
+          return Colors.grey.withOpacity(0.2);
+        } else {
+          return Colors.white;
+        }
+      }),
       cells: [
         DataCell(
           Container(
@@ -261,29 +267,45 @@ class _MyHomePage2State extends State<MyHomePage2> {
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.05,
               child: (userNotify.leido)
-              ? const Icon(Icons.circle_rounded, color: Colors.green)
-              : const Icon(Icons.circle_rounded, color: Colors.red)),
+                  ? const Icon(Icons.circle_rounded, color: Colors.green)
+                  : const Icon(Icons.circle_rounded, color: Colors.red)),
         ),
       ],
     );
   }
 
   void loadData() async {
-    listaString.add('Hola');
-    listaString.add('Hola');
-    listaString.add('Hola');
-    listaString.add('Hola');
-
     try {
-      await FirebaseFirestore.instance
+      CollectionReference listNotifyQuery = FirebaseFirestore.instance
+          .collection('cuencaprueba')
+          .doc('novedades')
+          .collection('CIRO');
+      //.doc('conductor');
+
+      listNotifyQuery.firestore.collectionGroup('conductor').get().then((doc) => {
+        print(doc.docs),
+       });
+
+      //print(listNotifyQuery2.exists);
+
+      /*
+      QuerySnapshot listNotifyQuery = await FirebaseFirestore.instance
           .collection('cuencaprueba')
           .doc('novedades')
           .collection('CIRO')
           .doc('conductor')
-          .snapshots()
-          .forEach((element) {
-        element.data.call();
-      });
+          .collection('10-07-2022')
+          .where('titulo', isEqualTo: 'Novedad del conductor')
+          .get();
+
+      if (listNotifyQuery.docs.isNotEmpty) {
+        for (var doc in listNotifyQuery.docs) {
+          print(doc.id);
+          print(doc['mensaje']);
+          print(doc.data().toString());
+        }
+      }
+      */
     } catch (e) {
       print(e.toString());
       print('error...................');
@@ -463,11 +485,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void loadData() async {
-    listaString.add('Hola');
-    listaString.add('Hola');
-    listaString.add('Hola');
-    listaString.add('Hola');
-
+    print('Load Data');
     try {
       /*
       CollectionReference _collectionReference =
@@ -506,15 +524,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
 */
 
-      await FirebaseFirestore.instance
+      QuerySnapshot listNotifyQuery = await FirebaseFirestore.instance
           .collection('cuencaprueba')
           .doc('novedades')
           .collection('CIRO')
           .doc('conductor')
-          .snapshots()
-          .forEach((element) {
-        element.data.call();
-      });
+          .collection('10-07-2022')
+          .where('titulo', isEqualTo: 'Novedad del conductor')
+          .get();
+
+      if (listNotifyQuery.docs.isNotEmpty) {
+        for (var doc in listNotifyQuery.docs) {
+          print(doc['mensaje']);
+          print(doc.data().toString());
+        }
+      }
 
 /*
       QuerySnapshot users = await _collectionReference.get();
