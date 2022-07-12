@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1023265029318",
+    "project_id": "testingapp-61cce",
+    "storage_bucket": "testingapp-61cce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1023265029318:android:49b0b3c6fd4d7846d9ebc7",
+        "android_client_info": {
+          "package_name": "com.devrivera.testingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1023265029318-90lmtcgopla8be302lcl63obn2l6n7fa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBbrz2CffCgEj2lqjDM3KZfxVTd_Ql7Ro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1023265029318-90lmtcgopla8be302lcl63obn2l6n7fa.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1023265029318-00iqra9gri1skho5alcvl6fa34nc1jmo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.devrivera.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
